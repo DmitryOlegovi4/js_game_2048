@@ -54,6 +54,7 @@ async function handleInput(event){
                     setupInputOnce();
                     return;
             }
+            addTile();
             break;
         case "touchstart":
             event.stopPropagation();
@@ -96,10 +97,13 @@ async function handleInput(event){
                         await moveDown();
                     }
                 }
+                addTile();
             }
     }
-    const newTile = new Tile(gameBoard);
-    grid.getRandomEmptyCell().linkTile(newTile);
+    function addTile(){
+        const newTile = new Tile(gameBoard);
+        grid.getRandomEmptyCell().linkTile(newTile);
+    }
 
     if(!canMoveUp() && !canMoveDown() && !canMoveRight() && !canMoveLeft()){
         await newTile.waitForAnimationEnd();

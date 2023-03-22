@@ -5,6 +5,7 @@ if(!localStorage.getItem('result')){
     localStorage.setItem('result', 0)
 }
 const gameBoard = document.getElementById("game-board");
+let initialPoint, finalPoint;
 
 const grid = new Grid(gameBoard);
 grid.getRandomEmptyCell().linkTile(new Tile(gameBoard));
@@ -13,43 +14,90 @@ setupInputOnce();
 
 function setupInputOnce(){
     window.addEventListener('keydown', handleInput, {once: true})
+    window.addEventListener('touchstart', handleInput, {once: true});
+    window.addEventListener('touchend', handleInput, {once: true});
 }
 
 async function handleInput(event){
-    switch(event.key){
-        case "ArrowUp": 
-            if(!canMoveUp()){
-                setupInputOnce();
-                return;    
+    switch(event.type){
+        case "keydown":
+            switch(event.key){
+                case "ArrowUp":
+                    if(!canMoveUp()){
+                        setupInputOnce();
+                        return;
+                    }
+                    await moveUp();
+                    break;
+                case "ArrowDown":
+                    if(!canMoveDown()){
+                        setupInputOnce();
+                        return;
+                    }
+                    await moveDown();
+                    break;
+                case "ArrowRight":
+                    if(!canMoveRight()){
+                        setupInputOnce();
+                        return;
+                    }
+                    await moveRight();
+                    break;
+                case "ArrowLeft":
+                    if(!canMoveLeft()){
+                        setupInputOnce();
+                        return;
+                    }
+                    await moveLeft();
+                    break;
+                default:
+                    setupInputOnce();
+                    return;
             }
-            await moveUp();
             break;
-        case "ArrowDown": 
-            if(!canMoveDown()){
-                setupInputOnce();
-                return;    
-            }
-            await moveDown();
-            break;
-        case "ArrowRight":
-            if(!canMoveRight()){
-                setupInputOnce();
-                return;    
-            }
-            await moveRight();
-            break;
-        case "ArrowLeft":
-            if(!canMoveLeft()){
-                setupInputOnce();
-                return;    
-            }
-            await moveLeft(); 
-            break;
-        default: 
-            setupInputOnce();
+        case "touchstart":
+            event.stopPropagation();
+            initialPoint = event.changedTouches[0];
             return;
+        case "touchend":
+            event.preventDefault();
+            event.stopPropagation();
+            finalPoint = event.changedTouches[0];
+            let xAbs = Math.abs(initialPoint.pageX - finalPoint.pageX),
+                yAbs = Math.abs(initialPoint.pageY - finalPoint.pageY);
+            if (xAbs > 20 || yAbs > 20) {
+                if (xAbs > yAbs) {
+                    if (finalPoint.pageX < initialPoint.pageX){
+                        if(!canMoveLeft()){
+                            setupInputOnce();
+                            return;
+                        }
+                        await moveLeft();
+                    }else{
+                        if(!canMoveRight()){
+                            setupInputOnce();
+                            return;
+                        }
+                        await moveRight();
+                    }
+                }else {
+                    if (finalPoint.pageY < initialPoint.pageY){
+                        if(!canMoveUp()){
+                            setupInputOnce();
+                            return;
+                        }
+                        await moveUp();
+                    }
+                    else{
+                        if(!canMoveDown()){
+                            setupInputOnce();
+                            return;
+                        }
+                        await moveDown();
+                    }
+                }
+            }
     }
-
     const newTile = new Tile(gameBoard);
     grid.getRandomEmptyCell().linkTile(newTile);
 

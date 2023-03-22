@@ -59,10 +59,9 @@ body{
     font-size: 20vmin;
     text-transform: uppercase;
     text-shadow: 2px 4px white;
-  }
-  
+}
 
-  .result{
+.result{
     position: absolute;
     right: 1vmin;
     top: 1vmin;
@@ -70,8 +69,8 @@ body{
     margin-bottom: 0;
     color: white;
     font-size: 2.5vmin;
-  }
-  .result::before {
+}
+.result::before {
     content: "";
     position: absolute;
     left: 0;
@@ -79,8 +78,8 @@ body{
     width: 4vmin;
     height: 4vmin;
     background: white;
-  }
-  .result::after {
+}
+.result::after {
     content: "";
     position: absolute;
     left: 0;
@@ -88,4 +87,4 @@ body{
     width: 100%;
     height: .75vmin;
     background-color: white;
-  }
+}

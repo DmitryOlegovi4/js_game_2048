@@ -106,7 +106,8 @@ async function handleInput(event){
     }
 
     if(!canMoveUp() && !canMoveDown() && !canMoveRight() && !canMoveLeft()){
-        await newTile.waitForAnimationEnd();
+        // разобраться с проблемой 
+        // await newTile.waitForAnimationEnd();
         let tilesArr = document.querySelectorAll('.tile'), arr = [];
         for(let tile of tilesArr){
             arr.push(+tile.innerText)

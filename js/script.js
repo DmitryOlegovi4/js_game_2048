@@ -111,6 +111,7 @@ async function handleInput(event){
         for(let tile of tilesArr){
             arr.push(+tile.innerText)
         }
+        console.log('Game Over');
         localStorage.setItem('result', Math.max.apply(null, arr))
         alert("Try Again");
         window.location.reload();
